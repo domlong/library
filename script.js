@@ -26,8 +26,6 @@ function clickAddToLibrary() {
     let author = form.querySelector("input[name='author']").value;
     let pages = form.querySelector("input[name='pages']").value;
     let read = form.querySelector("input[name='read']").value;
-    console.log(form.querySelector("input[name='read']"))
-    console.log({title, author, pages, read})
 }
 
 function openForm() {
@@ -39,8 +37,8 @@ function stackShelf() {
     let shelf = document.querySelector('#bookshelf');
     myLibrary.forEach((book) => {
         let card = document.createElement('div');
-        card.classList.add('book-card')
         let bookDiv = document.createElement('div.book');
+        bookDiv.classList.add('book')
         let title = document.createElement('h1');
         let author = document.createElement('h2');
         let pages = document.createElement('h3');
@@ -48,17 +46,13 @@ function stackShelf() {
         title.textContent = book.title;
         author.textContent = `by ${book.author}`;
         pages.textContent = `${book.pages} pages`;
-        if(book.haveRead) {
-            read.textContent = 'read';
-            read.classList.add('read')
-        }
-        else {
-            read.textContent = 'not read';
-            read.classList.add('unread')
-        }
+        
+        read.addEventListener('click', toggleRead);
+
         bookDiv.append(title, author, pages, read);
-        card.append(bookDiv);
-        shelf.append(card);
+        shelf.append(bookDiv);
+        toggleRead.call(read);
+        toggleRead.call(read);
     });
 }
 
@@ -67,20 +61,39 @@ function emptyShelf() {
     while(shelf.hasChildNodes()) {
         shelf.removeChild(shelf.lastChild);
     }
+}
 
+function removeBook() {
+    let bookNode = this.parentNode;
+    let index = Array.from(bookNode.parentNode.children).indexOf(bookNode);
+    bookNode.remove();
+    myLibrary.splice(index,1);
+}
+
+function toggleRead() {
+    const index = Array.from(this.parentNode.parentNode.children).indexOf(this.parentNode);
+    if (myLibrary[index].haveRead) {
+        this.textContent = 'not read';
+        this.classList.remove('read');
+        this.classList.add('unread');
+    }
+    else {
+        this.textContent = 'read';
+        this.classList.remove('unread');
+        this.classList.add('read');
+    }
+    myLibrary[index].haveRead = !myLibrary[index].haveRead;
 }
 
 addBookToLibrary(new Book('The Hobbit', 'J.R.R. Tolkien', 370, true));
-addBookToLibrary(new Book('Animal Farm', 'George Orwell', 212, true));
+addBookToLibrary(new Book('Animal Farm', 'George Orwell', 212, false));
 addBookToLibrary(new Book('Norwegian Wood', 'Haruki Murakami', 305, false));
+addBookToLibrary(new Book('Practical Ethics', 'Peter Singer', 455, true));
 
-// console.table(myLibrary);
+stackShelf();
 
 let btn = document.querySelector('#toggle-form');
 btn.addEventListener('click', openForm);
 
 let add = document.querySelector('#form-submit');
 add.addEventListener('click', clickAddToLibrary);
-
-let test = document.querySelector('#test-add');
-test.addEventListener('click', stackShelf);

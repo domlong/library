@@ -11,45 +11,56 @@ function addBookToLibrary(book) {
     myLibrary.push(book);
 }
 
-function clickAddToLibrary() {
-    let form = document.querySelector('#form-container');
+function addToLibrary() {
+    let form = document.querySelector('.form');
     let title = form.querySelector("input[name='title']").value;
     let author = form.querySelector("input[name='author']").value;
     let pages = form.querySelector("input[name='pages']").value;
-    let read = form.querySelector("input[name='read']").value;
+    let read = form.querySelector("input[name='read']").checked;
+    let book = new Book(title, author, pages, read);
+    addBookToLibrary(book);
+    createBookCard(book);
+    closeForm();
 }
 
 function openForm() {
+    document.querySelector('.form').classList.add('form-active');
+    document.querySelector('#fade').classList.add('overlay');
+}
 
+function closeForm() {
+    document.querySelector('.form').classList.remove('form-active');
+    document.querySelector('#fade').classList.remove('overlay');
 }
 
 function stackShelf() {
-    // emptyShelf();
+    myLibrary.forEach(createBookCard)
+}
+
+function createBookCard(book) {
     let shelf = document.querySelector('#bookshelf');
-    myLibrary.forEach((book) => {
-        let card = document.createElement('div');
-        let bookDiv = document.createElement('div.book');
-        bookDiv.classList.add('book')
-        let title = document.createElement('h1');
-        let author = document.createElement('h2');
-        let pages = document.createElement('h3');
-        let read = document.createElement('button');
-        let remove = document.createElement('button');
+    let card = document.createElement('div');
+    let bookDiv = document.createElement('div.book');
+    bookDiv.classList.add('book')
+    let title = document.createElement('h1');
+    let author = document.createElement('h2');
+    let pages = document.createElement('h3');
+    let read = document.createElement('button');
+    let remove = document.createElement('button');
 
-        title.textContent = book.title;
-        author.textContent = `by ${book.author}`;
-        pages.textContent = `${book.pages} pages`;
-        remove.textContent = `remove from library`;
-        remove.classList.add('remove')
+    title.textContent = book.title;
+    author.textContent = `by ${book.author}`;
+    pages.textContent = `${book.pages} pages`;
+    remove.textContent = `remove from library`;
+    remove.classList.add('remove')
 
-        read.addEventListener('click', toggleRead);
-        remove.addEventListener('click', removeBook);
+    read.addEventListener('click', toggleRead);
+    remove.addEventListener('click', removeBook);
 
-        bookDiv.append(title, author, pages, read, remove);
-        shelf.append(bookDiv);
-        toggleRead.call(read);
-        toggleRead.call(read);
-    });
+    bookDiv.append(title, author, pages, read, remove);
+    shelf.append(bookDiv);
+    toggleRead.call(read);
+    toggleRead.call(read);
 }
 
 function emptyShelf() {
@@ -82,6 +93,8 @@ function toggleRead() {
     myLibrary[index].haveRead = !myLibrary[index].haveRead;
 }
 
+
+
 function addExampleBooks() {
     addBookToLibrary(new Book('The Hobbit', 'J.R.R. Tolkien', 370, true));
     addBookToLibrary(new Book('Animal Farm', 'George Orwell', 212, false));
@@ -93,17 +106,16 @@ function addExampleBooks() {
     addBookToLibrary(new Book('Manufactured Consent', 'Noam Chomsky', 255, true));
     addBookToLibrary(new Book('The Problems of Philosophy', 'Bertrand Russell', 432, false));
     addBookToLibrary(new Book('The Bell Jar', 'Sylvia Plath', 851, true));
-
-
-
     stackShelf();
 }
 
-let btn = document.querySelector('#toggle-form');
+let open = document.querySelector('#toggle-form');
 let add = document.querySelector('#form-submit');
 let fill = document.querySelector('#fill-shelf');
 let empty = document.querySelector('#empty-shelf');
-btn.addEventListener('click', openForm);
-add.addEventListener('click', clickAddToLibrary);
+let cancel = document.querySelector('#form-cancel');
+open.addEventListener('click', openForm);
+add.addEventListener('click', addToLibrary);
 fill.addEventListener('click', addExampleBooks);
 empty.addEventListener('click', emptyShelf);
+cancel.addEventListener('click', closeForm);

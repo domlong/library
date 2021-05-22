@@ -5,15 +5,6 @@ function Book(title, author, pages, haveRead) {
     this.author = author;
     this.pages = pages;
     this.haveRead = haveRead;
-    this.info = function() {
-        let msg = `${title} by ${author}, ${pages} pages, `;
-        if(haveRead) {
-            msg += 'have read';
-        } else {
-            msg += 'not read yet';
-        } 
-        return msg;
-    }
 }
 
 function addBookToLibrary(book) {
@@ -33,7 +24,7 @@ function openForm() {
 }
 
 function stackShelf() {
-    emptyShelf();
+    // emptyShelf();
     let shelf = document.querySelector('#bookshelf');
     myLibrary.forEach((book) => {
         let card = document.createElement('div');
@@ -43,13 +34,18 @@ function stackShelf() {
         let author = document.createElement('h2');
         let pages = document.createElement('h3');
         let read = document.createElement('button');
+        let remove = document.createElement('button');
+
         title.textContent = book.title;
         author.textContent = `by ${book.author}`;
         pages.textContent = `${book.pages} pages`;
-        
-        read.addEventListener('click', toggleRead);
+        remove.textContent = `remove from library`;
+        remove.classList.add('remove')
 
-        bookDiv.append(title, author, pages, read);
+        read.addEventListener('click', toggleRead);
+        remove.addEventListener('click', removeBook);
+
+        bookDiv.append(title, author, pages, read, remove);
         shelf.append(bookDiv);
         toggleRead.call(read);
         toggleRead.call(read);
@@ -61,6 +57,7 @@ function emptyShelf() {
     while(shelf.hasChildNodes()) {
         shelf.removeChild(shelf.lastChild);
     }
+    myLibrary = [];
 }
 
 function removeBook() {
@@ -85,15 +82,28 @@ function toggleRead() {
     myLibrary[index].haveRead = !myLibrary[index].haveRead;
 }
 
-addBookToLibrary(new Book('The Hobbit', 'J.R.R. Tolkien', 370, true));
-addBookToLibrary(new Book('Animal Farm', 'George Orwell', 212, false));
-addBookToLibrary(new Book('Norwegian Wood', 'Haruki Murakami', 305, false));
-addBookToLibrary(new Book('Practical Ethics', 'Peter Singer', 455, true));
+function addExampleBooks() {
+    addBookToLibrary(new Book('The Hobbit', 'J.R.R. Tolkien', 370, true));
+    addBookToLibrary(new Book('Animal Farm', 'George Orwell', 212, false));
+    addBookToLibrary(new Book('Norwegian Wood', 'Haruki Murakami', 305, false));
+    addBookToLibrary(new Book('Practical Ethics', 'Peter Singer', 455, true));
+    addBookToLibrary(new Book('Cat\'s Cradle', 'Kurt Vonnegut', 283, true));
+    addBookToLibrary(new Book('Thus Spoke Zarathustra', 'Friedrich Nietzsche', 199, false));
+    addBookToLibrary(new Book('Frankenstein', 'Mary Shelley', 666, false));
+    addBookToLibrary(new Book('Manufactured Consent', 'Noam Chomsky', 255, true));
+    addBookToLibrary(new Book('The Problems of Philosophy', 'Bertrand Russell', 432, false));
+    addBookToLibrary(new Book('The Bell Jar', 'Sylvia Plath', 851, true));
 
-stackShelf();
+
+
+    stackShelf();
+}
 
 let btn = document.querySelector('#toggle-form');
-btn.addEventListener('click', openForm);
-
 let add = document.querySelector('#form-submit');
+let fill = document.querySelector('#fill-shelf');
+let empty = document.querySelector('#empty-shelf');
+btn.addEventListener('click', openForm);
 add.addEventListener('click', clickAddToLibrary);
+fill.addEventListener('click', addExampleBooks);
+empty.addEventListener('click', emptyShelf);

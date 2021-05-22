@@ -25,13 +25,35 @@ h1, h2, h3 {
     font-size: 18px;
 }
 
+h1 {
+    font-style: italic;
+}
+
+h3 {
+    font-weight: 100;
+}
+
+#controls {
+    display: flex;
+    justify-content: space-between;
+    justify-content: center;
+}
+
+#controls button {
+    margin: 10px;
+    padding: 10px;
+}
+
 #bookshelf {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    margin: 0 auto;
 }
 
 .book {
+    display: flex;
+    flex-direction: column;
     width: 250px;
     height: 300px;
     background-color: var(--secondary);
@@ -39,7 +61,11 @@ h1, h2, h3 {
     padding: 20px;
     border: 2px solid var(--item-border);
     border-radius: 10%;
+    align-items: center;
+}
 
+.book button {
+    width: 70%;
 }
 
 #form {
@@ -75,9 +101,13 @@ h1, h2, h3 {
 
 .read {
     background-color: #ADF7B6;
-
 }
 
 .unread {
+    background-color: #C287E8;
+}
+
+.remove {
     background-color: #ffc09f;
+    margin: auto 0;
 }

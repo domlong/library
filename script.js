@@ -1,5 +1,3 @@
-let myLibrary = [];
-
 function Book(title, author, pages, haveRead) {
     this.title = title;
     this.author = author;
@@ -9,6 +7,7 @@ function Book(title, author, pages, haveRead) {
 
 function addBookToLibrary(book) {
     myLibrary.push(book);
+    saveLocal();
 }
 
 function addToLibrary() {
@@ -76,6 +75,7 @@ function removeBook() {
     let index = Array.from(bookNode.parentNode.children).indexOf(bookNode);
     bookNode.remove();
     myLibrary.splice(index,1);
+    saveLocal();
 }
 
 function toggleRead() {
@@ -91,9 +91,8 @@ function toggleRead() {
         this.classList.add('read');
     }
     myLibrary[index].haveRead = !myLibrary[index].haveRead;
+    saveLocal();
 }
-
-
 
 function addExampleBooks() {
     addBookToLibrary(new Book('The Hobbit', 'J.R.R. Tolkien', 370, true));
@@ -109,13 +108,28 @@ function addExampleBooks() {
     stackShelf();
 }
 
+let myLibrary = [];
 let open = document.querySelector('#toggle-form');
 let add = document.querySelector('#form-submit');
 let fill = document.querySelector('#fill-shelf');
 let empty = document.querySelector('#empty-shelf');
 let cancel = document.querySelector('#form-cancel');
+
 open.addEventListener('click', openForm);
 add.addEventListener('click', addToLibrary);
 fill.addEventListener('click', addExampleBooks);
 empty.addEventListener('click', emptyShelf);
 cancel.addEventListener('click', closeForm);
+
+// local storage
+function saveLocal() {
+    localStorage.setItem('library', JSON.stringify(myLibrary));
+}
+
+function loadLocal() {
+    myLibrary = JSON.parse(localStorage.getItem('library'));
+    if (myLibrary === null) myLibrary = [];
+    stackShelf();   
+}
+
+loadLocal();

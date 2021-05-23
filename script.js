@@ -33,7 +33,9 @@ function closeForm() {
 }
 
 function stackShelf() {
-    myLibrary.forEach(createBookCard)
+    const cardCount = document.querySelector('#bookshelf').childElementCount;
+    console.log(cardCount);
+    myLibrary.slice(cardCount).forEach(createBookCard);
 }
 
 function createBookCard(book) {
@@ -109,17 +111,11 @@ function addExampleBooks() {
 }
 
 let myLibrary = [];
-let open = document.querySelector('#toggle-form');
-let add = document.querySelector('#form-submit');
-let fill = document.querySelector('#fill-shelf');
-let empty = document.querySelector('#empty-shelf');
-let cancel = document.querySelector('#form-cancel');
-
-open.addEventListener('click', openForm);
-add.addEventListener('click', addToLibrary);
-fill.addEventListener('click', addExampleBooks);
-empty.addEventListener('click', emptyShelf);
-cancel.addEventListener('click', closeForm);
+document.querySelector('#toggle-form').addEventListener('click', openForm);;
+document.querySelector('#form-submit').addEventListener('click', addToLibrary);
+document.querySelector('#fill-shelf').addEventListener('click', addExampleBooks);
+document.querySelector('#empty-shelf').addEventListener('click', emptyShelf);
+document.querySelector('#form-cancel').addEventListener('click', closeForm);
 
 // local storage
 function saveLocal() {

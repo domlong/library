@@ -1,8 +1,17 @@
-function Book(title, author, pages, haveRead) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.haveRead = haveRead;
+class Book{
+    constructor(
+        title = 'Unknown',
+        author = 'Unknown',
+        pages = 0,
+        haveRead = false)
+        {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.haveRead = haveRead;
+    }
+
+    toggleRead
 }
 
 function addBookToLibrary(book) {
@@ -16,10 +25,17 @@ function addToLibrary() {
     let author = form.querySelector("input[name='author']").value;
     let pages = form.querySelector("input[name='pages']").value;
     let read = form.querySelector("input[name='read']").checked;
-    let book = new Book(title, author, pages, read);
+    
+    if(title === '' || author === '' || pages === '') return
+    let book = new Book(
+        title ? title : 'Unknown',
+        author ? author : 'Unknown',
+        pages,
+        read);
     addBookToLibrary(book);
     createBookCard(book);
     closeForm();
+    form.reset();
 }
 
 function openForm() {
@@ -34,7 +50,6 @@ function closeForm() {
 
 function stackShelf() {
     const cardCount = document.querySelector('#bookshelf').childElementCount;
-    console.log(cardCount);
     myLibrary.slice(cardCount).forEach(createBookCard);
 }
 
